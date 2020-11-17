@@ -20,6 +20,7 @@ public class Project {
 
     private String projectName;
 
+    @Column(updatable = false, unique = true)
     private String projectIdentifier;
 
     private String description;
