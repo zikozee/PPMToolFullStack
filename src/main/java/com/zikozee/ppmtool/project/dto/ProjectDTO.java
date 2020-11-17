@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -25,7 +26,7 @@ public class ProjectDTO {
     @Size(min = 4, max= 5, message = "Please use 4 to 5 characters")
     private String projectIdentifier;
 
-    @NotBlank(message = "Project description is required")
+    @NotEmpty(message = "Project description is required")
     private String description;
 
     @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
