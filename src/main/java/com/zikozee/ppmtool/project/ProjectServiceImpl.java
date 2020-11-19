@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +40,13 @@ public class ProjectServiceImpl implements ProjectService{
                 .orElseThrow(() -> new ProjectIdException("Project with identifier: " + projectIdentifier + " does not exist"));
 
         return modelMapper.map(project, ProjectDTO.class);
+    }
+
+    @Override
+    public List<ProjectDTO> findAllProject() {
+        List<ProjectDTO> projectDTOList = new ArrayList<>();
+        projectRepository.findAll().forEach(project -> projectDTOList.add(modelMapper.map(project, ProjectDTO.class)));
+        return  projectDTOList;
     }
 
 }
