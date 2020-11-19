@@ -10,6 +10,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.validation.ConstraintViolationException;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService{
@@ -23,7 +25,7 @@ public class ProjectServiceImpl implements ProjectService{
             projectDTO.setProjectIdentifier(Utility.toUpperCaseNullable(projectDTO.getProjectIdentifier()));
             Project project = modelMapper.map(projectDTO, Project.class);
             return modelMapper.map(projectRepository.save(project), ProjectDTO.class);
-        }catch (DataIntegrityViolationException e){
+        }catch (DataIntegrityViolationException | ConstraintViolationException e){
             throw new ProjectIdException("Project Id '" + StringUtils.trimAllWhitespace(projectDTO.getProjectIdentifier()).toUpperCase() + "' already exist");
         }catch (Exception e){
             throw new ProjectException("An Error Occurred: "  + e.getMessage());
