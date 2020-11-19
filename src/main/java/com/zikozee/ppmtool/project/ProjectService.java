@@ -11,4 +11,6 @@ public interface ProjectService {
     ProjectDTO findProjectByIdentifier(String projectIdentifier);
 
     List<ProjectDTO> findAllProject();
+
+    String deleteProjectByIdentifier(String projectIdentifier);
 }

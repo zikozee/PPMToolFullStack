@@ -36,10 +36,13 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     public ProjectDTO findProjectByIdentifier(String projectIdentifier) {
-        Project project = projectRepository.findByProjectIdentifier(Utility.toUpperCaseNullable(projectIdentifier))
-                .orElseThrow(() -> new ProjectIdException("Project with identifier: " + projectIdentifier + " does not exist"));
-
+        Project project = findByProjectIdentifier(projectIdentifier);
         return modelMapper.map(project, ProjectDTO.class);
+    }
+
+    private Project findByProjectIdentifier(String projectIdentifier){
+        return projectRepository.findByProjectIdentifier(Utility.toUpperCaseNullable(projectIdentifier))
+                .orElseThrow(() -> new ProjectIdException("Project with identifier: " + projectIdentifier + " does not exist"));
     }
 
     @Override
@@ -47,6 +50,16 @@ public class ProjectServiceImpl implements ProjectService{
         List<ProjectDTO> projectDTOList = new ArrayList<>();
         projectRepository.findAll().forEach(project -> projectDTOList.add(modelMapper.map(project, ProjectDTO.class)));
         return  projectDTOList;
+    }
+
+    @Override
+    public String deleteProjectByIdentifier(String projectIdentifier) {
+        Project project = findByProjectIdentifier(projectIdentifier);
+        if(project != null){
+            projectRepository.delete(project);
+        }
+
+        return "Project with identifier: '" + projectIdentifier + "' has been deleted";
     }
 
 }
