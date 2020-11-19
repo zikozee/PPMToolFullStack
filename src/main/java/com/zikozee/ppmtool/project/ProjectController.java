@@ -1,6 +1,8 @@
 package com.zikozee.ppmtool.project;
 
-import com.zikozee.ppmtool.project.dto.ProjectDTO;
+import com.zikozee.ppmtool.project.dto.CreateProjectDTO;
+import com.zikozee.ppmtool.project.dto.QueryProjectDTO;
+import com.zikozee.ppmtool.project.dto.UpdateProjectDTO;
 import com.zikozee.ppmtool.services.MapValidationErrorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,23 +22,32 @@ public class ProjectController {
     private final MapValidationErrorService mapValidationErrorService;
 
     @PostMapping
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody ProjectDTO projectDTO, BindingResult result){
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody CreateProjectDTO createProjectDTO, BindingResult result){
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
 
-        ProjectDTO response = projectService.saveOrUpdateProject(projectDTO);
+        QueryProjectDTO response = projectService.createProject(createProjectDTO);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("{projectId}")
-    public ResponseEntity<ProjectDTO> getProjectById(@Valid @PathVariable("projectId") String projectId){
+    @PutMapping
+    public ResponseEntity<?> updateProject(@Valid @RequestBody UpdateProjectDTO updateProjectDTO, BindingResult result){
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if(errorMap != null) return errorMap;
 
-        ProjectDTO projectDTO = projectService.findProjectByIdentifier(projectId);
-        return new ResponseEntity<>(projectDTO, HttpStatus.OK);
+        QueryProjectDTO response = projectService.updateProject(updateProjectDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("{projectId}")
+    public ResponseEntity<QueryProjectDTO> getProjectById(@Valid @PathVariable("projectId") String projectId){
+
+        QueryProjectDTO queryProjectDTO = projectService.findProjectByIdentifier(projectId);
+        return new ResponseEntity<>(queryProjectDTO, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDTO>> getAllProjecs(){
+    public ResponseEntity<List<QueryProjectDTO>> getAllProjecs(){
         return new ResponseEntity<>(projectService.findAllProject(), HttpStatus.OK);
     }
 

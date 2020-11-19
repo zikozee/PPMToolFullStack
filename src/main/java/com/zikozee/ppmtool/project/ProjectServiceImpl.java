@@ -2,13 +2,16 @@ package com.zikozee.ppmtool.project;
 
 import com.zikozee.ppmtool.exceptions.ProjectException;
 import com.zikozee.ppmtool.exceptions.ProjectIdException;
-import com.zikozee.ppmtool.project.dto.ProjectDTO;
+import com.zikozee.ppmtool.project.dto.CreateProjectDTO;
+import com.zikozee.ppmtool.project.dto.QueryProjectDTO;
+import com.zikozee.ppmtool.project.dto.UpdateProjectDTO;
+import com.zikozee.ppmtool.utility.PatchMapper;
 import com.zikozee.ppmtool.utility.Utility;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -22,33 +25,49 @@ public class ProjectServiceImpl implements ProjectService{
     private final ModelMapper modelMapper;
 
     @Override
-    public ProjectDTO saveOrUpdateProject(ProjectDTO projectDTO) {
+    public QueryProjectDTO createProject(CreateProjectDTO createProjectDTO) {
         try{
-            projectDTO.setProjectIdentifier(Utility.toUpperCaseNullable(projectDTO.getProjectIdentifier()));
-            Project project = modelMapper.map(projectDTO, Project.class);
-            return modelMapper.map(projectRepository.save(project), ProjectDTO.class);
+            createProjectDTO.setProjectIdentifier(Utility.toUpperCaseNullable(createProjectDTO.getProjectIdentifier()));
+            Project project = modelMapper.map(createProjectDTO, Project.class);
+            return modelMapper.map(projectRepository.save(project), QueryProjectDTO.class);
         }catch (DataIntegrityViolationException | ConstraintViolationException e){
-            throw new ProjectIdException("Project Id '" + StringUtils.trimAllWhitespace(projectDTO.getProjectIdentifier()).toUpperCase() + "' already exist");
+            throw new ProjectIdException("Project Id '" + Utility.toUpperCaseNullable(createProjectDTO.getProjectIdentifier()) + "' already exist");
         }catch (Exception e){
             throw new ProjectException("An Error Occurred: "  + e.getMessage());
         }
     }
 
     @Override
-    public ProjectDTO findProjectByIdentifier(String projectIdentifier) {
+    public QueryProjectDTO updateProject(UpdateProjectDTO updateProjectDTO) {
+        String projectIdentifier = Utility.toUpperCaseNullable(updateProjectDTO.getProjectIdentifier());
+        updateProjectDTO.setProjectIdentifier(projectIdentifier);
         Project project = findByProjectIdentifier(projectIdentifier);
-        return modelMapper.map(project, ProjectDTO.class);
+
+        project = PatchMapper.of(() -> updateProjectDTO).map(project).get();
+        Project project1;
+        try {
+             project1 = projectRepository.save(project);
+        }catch (JpaSystemException e){
+            throw new ProjectException("project identifier '" + projectIdentifier + "' does not match serial ID '" + project.getId() + "'");
+        }
+        return modelMapper.map(project1, QueryProjectDTO.class);
+    }
+
+    @Override
+    public QueryProjectDTO findProjectByIdentifier(String projectIdentifier) {
+        Project project = findByProjectIdentifier(projectIdentifier);
+        return modelMapper.map(project, QueryProjectDTO.class);
     }
 
     private Project findByProjectIdentifier(String projectIdentifier){
         return projectRepository.findByProjectIdentifier(Utility.toUpperCaseNullable(projectIdentifier))
-                .orElseThrow(() -> new ProjectIdException("Project with identifier: " + projectIdentifier + " does not exist"));
+                .orElseThrow(() -> new ProjectIdException("Project with identifier: '" + projectIdentifier + "' does not exist"));
     }
 
     @Override
-    public List<ProjectDTO> findAllProject() {
-        List<ProjectDTO> projectDTOList = new ArrayList<>();
-        projectRepository.findAll().forEach(project -> projectDTOList.add(modelMapper.map(project, ProjectDTO.class)));
+    public List<QueryProjectDTO> findAllProject() {
+        List<QueryProjectDTO> projectDTOList = new ArrayList<>();
+        projectRepository.findAll().forEach(project -> projectDTOList.add(modelMapper.map(project, QueryProjectDTO.class)));
         return  projectDTOList;
     }
 

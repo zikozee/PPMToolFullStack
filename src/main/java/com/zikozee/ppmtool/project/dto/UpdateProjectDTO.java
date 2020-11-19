@@ -6,17 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProjectDTO {
+public class UpdateProjectDTO {
 
+    @NotNull(message = "id cannot be null")
+    @Min(value = 1, message = "id cannot be less than 1")
     private Long id;
 
     @NotBlank(message = "Project Name is required")
