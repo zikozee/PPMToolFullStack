@@ -1,16 +1,20 @@
 package com.zikozee.ppmtool.project;
 
-import com.zikozee.ppmtool.project.dto.ProjectDTO;
+import com.zikozee.ppmtool.project.dto.CreateProjectDTO;
+import com.zikozee.ppmtool.project.dto.QueryProjectDTO;
+import com.zikozee.ppmtool.project.dto.UpdateProjectDTO;
 
 import java.util.List;
 
 public interface ProjectService {
 
-    ProjectDTO saveOrUpdateProject(ProjectDTO projectDTO);
+    QueryProjectDTO createProject(CreateProjectDTO createProjectDTO);
 
-    ProjectDTO findProjectByIdentifier(String projectIdentifier);
+    QueryProjectDTO updateProject(UpdateProjectDTO projectDTO);
 
-    List<ProjectDTO> findAllProject();
+    QueryProjectDTO findProjectByIdentifier(String projectIdentifier);
+
+    List<QueryProjectDTO> findAllProject();
 
     String deleteProjectByIdentifier(String projectIdentifier);
 }
