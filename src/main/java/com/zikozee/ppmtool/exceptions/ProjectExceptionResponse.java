@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter @Setter
 public class ProjectExceptionResponse {
 
-    private String projectIdentifier;
+    private String projectIdentifier; // this is what will show up in the exception as field
 
 }

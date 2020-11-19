@@ -32,4 +32,12 @@ public class ProjectServiceImpl implements ProjectService{
         }
     }
 
+    @Override
+    public ProjectDTO findProjectByIdentifier(String projectIdentifier) {
+        Project project = projectRepository.findByProjectIdentifier(Utility.toUpperCaseNullable(projectIdentifier))
+                .orElseThrow(() -> new ProjectIdException("Project with identifier: " + projectIdentifier + " does not exist"));
+
+        return modelMapper.map(project, ProjectDTO.class);
+    }
+
 }
