@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -29,9 +30,11 @@ public class CreateProjectDTO {
     @NotEmpty(message = "Project description is required")
     private String description;
 
+    @NotNull(message = "enter a valid start date")
     @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date startDate;
 
+    @NotNull(message = "enter a valid end date")
     @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date endDate;
 
