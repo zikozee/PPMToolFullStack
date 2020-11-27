@@ -48,7 +48,7 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<QueryProjectDTO>> getAllProjecs(){
+    public ResponseEntity<List<QueryProjectDTO>> getAllProjects(){
         return new ResponseEntity<>(projectService.findAllProject(), HttpStatus.OK);
     }
 
