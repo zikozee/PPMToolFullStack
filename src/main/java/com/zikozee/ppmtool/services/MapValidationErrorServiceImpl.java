@@ -1,22 +1,26 @@
 package com.zikozee.ppmtool.services;
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class MapValidationErrorServiceImpl implements MapValidationErrorService {
     @Override
     public ResponseEntity<?> MapValidationService(BindingResult result) {
         if(result.hasErrors()){
-            Map<String, String> errorMap = result.getFieldErrors().stream()
-                    .collect(Collectors.toMap(FieldError::getField, DefaultMessageSourceResolvable::getDefaultMessage));
+            log.info("error: " + result.hasErrors());
+            Map<String, String> errorMap = new HashMap<>();
+                for(FieldError error: result.getFieldErrors())
+                    errorMap.put(error.getField(), error.getDefaultMessage());
+
             return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
         }
         return null;
