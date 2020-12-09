@@ -19,22 +19,20 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ProjectServiceImpl implements ProjectService{
+public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ModelMapper modelMapper;
 
     @Override
     public QueryProjectDTO createProject(CreateProjectDTO createProjectDTO) {
-        try{
-            createProjectDTO.setProjectIdentifier(Utility.toUpperCaseNullable(createProjectDTO.getProjectIdentifier()));
-            Project project = modelMapper.map(createProjectDTO, Project.class);
-            return modelMapper.map(projectRepository.save(project), QueryProjectDTO.class);
-        }catch (DataIntegrityViolationException | ConstraintViolationException e){
+
+        if (projectRepository.existsByProjectIdentifier(Utility.toUpperCaseNullable(createProjectDTO.getProjectIdentifier())))
             throw new ProjectIdException("Project Id '" + Utility.toUpperCaseNullable(createProjectDTO.getProjectIdentifier()) + "' already exist");
-        }catch (Exception e){
-            throw new ProjectException("An Error Occurred: "  + e.getMessage());
-        }
+
+        createProjectDTO.setProjectIdentifier(Utility.toUpperCaseNullable(createProjectDTO.getProjectIdentifier()));
+        Project project = modelMapper.map(createProjectDTO, Project.class);
+        return modelMapper.map(projectRepository.save(project), QueryProjectDTO.class);
     }
 
     @Override
@@ -46,8 +44,8 @@ public class ProjectServiceImpl implements ProjectService{
         project = PatchMapper.of(() -> updateProjectDTO).map(project).get();
         Project project1;
         try {
-             project1 = projectRepository.save(project);
-        }catch (JpaSystemException e){
+            project1 = projectRepository.save(project);
+        } catch (JpaSystemException e) {
             throw new ProjectException("project identifier '" + projectIdentifier + "' does not match serial ID '" + project.getId() + "'");
         }
         return modelMapper.map(project1, QueryProjectDTO.class);
@@ -59,7 +57,7 @@ public class ProjectServiceImpl implements ProjectService{
         return modelMapper.map(project, QueryProjectDTO.class);
     }
 
-    private Project findByProjectIdentifier(String projectIdentifier){
+    private Project findByProjectIdentifier(String projectIdentifier) {
         return projectRepository.findByProjectIdentifier(Utility.toUpperCaseNullable(projectIdentifier))
                 .orElseThrow(() -> new ProjectIdException("Project with identifier: '" + projectIdentifier + "' does not exist"));
     }
@@ -68,13 +66,13 @@ public class ProjectServiceImpl implements ProjectService{
     public List<QueryProjectDTO> findAllProject() {
         List<QueryProjectDTO> projectDTOList = new ArrayList<>();
         projectRepository.findAll().forEach(project -> projectDTOList.add(modelMapper.map(project, QueryProjectDTO.class)));
-        return  projectDTOList;
+        return projectDTOList;
     }
 
     @Override
     public String deleteProjectByIdentifier(String projectIdentifier) {
         Project project = findByProjectIdentifier(projectIdentifier);
-        if(project != null){
+        if (project != null) {
             projectRepository.delete(project);
         }
 

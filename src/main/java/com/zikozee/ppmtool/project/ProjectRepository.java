@@ -10,4 +10,6 @@ import java.util.stream.Stream;
 public interface ProjectRepository extends CrudRepository<Project, Long> {
 
     Optional<Project> findByProjectIdentifier(String projectIdentifier);
+
+    boolean existsByProjectIdentifier(String projectIdentifier);
 }
