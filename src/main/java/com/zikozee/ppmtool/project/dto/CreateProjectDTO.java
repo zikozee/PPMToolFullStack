@@ -31,16 +31,16 @@ public class CreateProjectDTO {
     private String description;
 
     @NotNull(message = "enter a valid start date")
-    @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
+    @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date startDate;
 
     @NotNull(message = "enter a valid end date")
-    @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
+    @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date endDate;
 
-    @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
+    @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date createdAt;
 
-    @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
+    @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date updatedAt;
 }

@@ -29,6 +29,7 @@ public class Project {
 
     private Date endDate;
 
+    @Column(updatable = false)
     private Date createdAt;
 
     private Date updatedAt;

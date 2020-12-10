@@ -1,5 +1,6 @@
 package com.zikozee.ppmtool.project.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,8 +22,10 @@ public class QueryProjectDTO {
 
     private String description;
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date startDate;
 
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date endDate;
 
     private Date createdAt;

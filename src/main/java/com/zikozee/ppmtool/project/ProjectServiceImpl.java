@@ -39,7 +39,9 @@ public class ProjectServiceImpl implements ProjectService {
     public QueryProjectDTO updateProject(UpdateProjectDTO updateProjectDTO) {
         String projectIdentifier = Utility.toUpperCaseNullable(updateProjectDTO.getProjectIdentifier());
         updateProjectDTO.setProjectIdentifier(projectIdentifier);
-        Project project = findByProjectIdentifier(projectIdentifier);
+        Project project = this.findByProjectIdentifier(projectIdentifier);
+//        if(!project.getId().equals(updateProjectDTO.getId()))
+//            throw new ProjectException("project identifier '" + projectIdentifier + "' does not match serial ID '" + project.getId() + "'POP");
 
         project = PatchMapper.of(() -> updateProjectDTO).map(project).get();
         Project project1;

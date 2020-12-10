@@ -16,7 +16,8 @@ import java.util.Date;
 public class UpdateProjectDTO {
 
     @NotNull(message = "id cannot be null")
-    @Min(value = 1, message = "id cannot be less than 1")
+    @Min(value = 1, message = "id cannot be less than 1" +
+            "........................")
     private Long id;
 
     @NotBlank(message = "Project Name is required")
@@ -29,15 +30,15 @@ public class UpdateProjectDTO {
     @NotEmpty(message = "Project description is required")
     private String description;
 
-    @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
+    @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date startDate;
 
-    @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
+    @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date endDate;
 
-    @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
+    @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date createdAt;
 
-    @JsonFormat(pattern = "yyy-mm-dd")  // remember it returns time buh we are truncating it
+    @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date updatedAt;
 }
