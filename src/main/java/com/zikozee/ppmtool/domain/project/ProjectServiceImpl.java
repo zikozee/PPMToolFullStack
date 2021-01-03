@@ -1,5 +1,6 @@
 package com.zikozee.ppmtool.domain.project;
 
+import com.zikozee.ppmtool.domain.backlog.Backlog;
 import com.zikozee.ppmtool.exceptions.ProjectException;
 import com.zikozee.ppmtool.exceptions.ProjectIdException;
 import com.zikozee.ppmtool.domain.project.dto.CreateProjectDTO;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zikozee.ppmtool.utility.Utility.toUpperCaseNullable;
+
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
@@ -25,17 +28,23 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public QueryProjectDTO createProject(CreateProjectDTO createProjectDTO) {
 
-        if (projectRepository.existsByProjectIdentifier(Utility.toUpperCaseNullable(createProjectDTO.getProjectIdentifier())))
-            throw new ProjectIdException("Project Id '" + Utility.toUpperCaseNullable(createProjectDTO.getProjectIdentifier()) + "' already exist");
+        if (projectRepository.existsByProjectIdentifier(toUpperCaseNullable(createProjectDTO.getProjectIdentifier())))
+            throw new ProjectIdException("Project Id '" + toUpperCaseNullable(createProjectDTO.getProjectIdentifier()) + "' already exist");
 
-        createProjectDTO.setProjectIdentifier(Utility.toUpperCaseNullable(createProjectDTO.getProjectIdentifier()));
+        createProjectDTO.setProjectIdentifier(toUpperCaseNullable(createProjectDTO.getProjectIdentifier()));
         Project project = modelMapper.map(createProjectDTO, Project.class);
+
+        Backlog backlog = new Backlog();
+        project.setBacklog(backlog);
+        backlog.setProject(project);
+        backlog.setProjectIdentifier(toUpperCaseNullable(createProjectDTO.getProjectIdentifier()));
+
         return modelMapper.map(projectRepository.save(project), QueryProjectDTO.class);
     }
 
     @Override
     public QueryProjectDTO updateProject(UpdateProjectDTO updateProjectDTO) {
-        String projectIdentifier = Utility.toUpperCaseNullable(updateProjectDTO.getProjectIdentifier());
+        String projectIdentifier = toUpperCaseNullable(updateProjectDTO.getProjectIdentifier());
         updateProjectDTO.setProjectIdentifier(projectIdentifier);
         Project project = this.findByProjectIdentifier(projectIdentifier);
 //        if(!project.getId().equals(updateProjectDTO.getId()))
@@ -58,7 +67,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     private Project findByProjectIdentifier(String projectIdentifier) {
-        return projectRepository.findByProjectIdentifier(Utility.toUpperCaseNullable(projectIdentifier))
+        return projectRepository.findByProjectIdentifier(toUpperCaseNullable(projectIdentifier))
                 .orElseThrow(() -> new ProjectIdException("Project with identifier: '" + projectIdentifier + "' does not exist"));
     }
 
