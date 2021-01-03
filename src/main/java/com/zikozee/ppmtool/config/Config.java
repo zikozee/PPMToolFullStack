@@ -30,8 +30,12 @@ public class Config {
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowCredentials(false)//specifies if cross-domain requests can have authorization credentials or not.
                 .maxAge(3600);//Maximum age (in seconds) of the cache duration for pre-flight responses.
-//                registry.addMapping("/api/jjv")
-//                        .allowedOrigins("ANOTHER URL")
+
+                registry.addMapping("/api/backlog")
+                        .allowedOrigins(webUrl)
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowCredentials(false)
+                        .maxAge(3600);
 
             }
         };
