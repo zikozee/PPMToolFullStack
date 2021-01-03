@@ -1,9 +1,12 @@
 package com.zikozee.ppmtool.domain.project;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.zikozee.ppmtool.base.BaseEntity;
+import com.zikozee.ppmtool.domain.backlog.Backlog;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -32,6 +35,10 @@ public class Project extends BaseEntity {
 
     @LastModifiedDate
     private Date updatedAt;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
+//    @JsonBackReference //=> check child class
+    private Backlog backlog;
 
 //    /**
 //     *Every time we create or update a project the date is stored
