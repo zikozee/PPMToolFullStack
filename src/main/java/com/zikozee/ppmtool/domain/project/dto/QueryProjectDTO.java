@@ -1,4 +1,4 @@
-package com.zikozee.ppmtool.project.dto;
+package com.zikozee.ppmtool.domain.project.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
