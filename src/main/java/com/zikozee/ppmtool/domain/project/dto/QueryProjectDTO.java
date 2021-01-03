@@ -2,7 +2,6 @@ package com.zikozee.ppmtool.domain.project.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zikozee.ppmtool.domain.backlog.Backlog;
-import com.zikozee.ppmtool.domain.backlog.dto.QueryBacklog;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
