@@ -1,19 +1,17 @@
-package com.zikozee.ppmtool.project;
+package com.zikozee.ppmtool.domain.project;
 
 import com.zikozee.ppmtool.exceptions.ProjectException;
 import com.zikozee.ppmtool.exceptions.ProjectIdException;
-import com.zikozee.ppmtool.project.dto.CreateProjectDTO;
-import com.zikozee.ppmtool.project.dto.QueryProjectDTO;
-import com.zikozee.ppmtool.project.dto.UpdateProjectDTO;
+import com.zikozee.ppmtool.domain.project.dto.CreateProjectDTO;
+import com.zikozee.ppmtool.domain.project.dto.QueryProjectDTO;
+import com.zikozee.ppmtool.domain.project.dto.UpdateProjectDTO;
 import com.zikozee.ppmtool.utility.PatchMapper;
 import com.zikozee.ppmtool.utility.Utility;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,10 +1,9 @@
-package com.zikozee.ppmtool.project;
+package com.zikozee.ppmtool.domain.project;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Repository
 public interface ProjectRepository extends CrudRepository<Project, Long> {

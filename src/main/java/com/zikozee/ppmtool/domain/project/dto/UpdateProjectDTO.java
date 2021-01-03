@@ -1,4 +1,4 @@
-package com.zikozee.ppmtool.project.dto;
+package com.zikozee.ppmtool.domain.project.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -6,18 +6,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CreateProjectDTO {
+public class UpdateProjectDTO {
 
+    @NotNull(message = "id cannot be null")
+    @Min(value = 1, message = "id cannot be less than 1" +
+            "........................")
     private Long id;
 
     @NotBlank(message = "Project Name is required")
@@ -30,11 +30,9 @@ public class CreateProjectDTO {
     @NotEmpty(message = "Project description is required")
     private String description;
 
-    @NotNull(message = "enter a valid start date")
     @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date startDate;
 
-    @NotNull(message = "enter a valid end date")
     @JsonFormat(pattern = "yyyy-mm-dd")  // remember it returns time buh we are truncating it
     private Date endDate;
 

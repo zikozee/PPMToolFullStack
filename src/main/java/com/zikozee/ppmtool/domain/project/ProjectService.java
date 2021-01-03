@@ -1,8 +1,8 @@
-package com.zikozee.ppmtool.project;
+package com.zikozee.ppmtool.domain.project;
 
-import com.zikozee.ppmtool.project.dto.CreateProjectDTO;
-import com.zikozee.ppmtool.project.dto.QueryProjectDTO;
-import com.zikozee.ppmtool.project.dto.UpdateProjectDTO;
+import com.zikozee.ppmtool.domain.project.dto.CreateProjectDTO;
+import com.zikozee.ppmtool.domain.project.dto.QueryProjectDTO;
+import com.zikozee.ppmtool.domain.project.dto.UpdateProjectDTO;
 
 import java.util.List;
 
