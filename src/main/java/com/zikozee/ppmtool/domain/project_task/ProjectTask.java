@@ -1,6 +1,8 @@
 package com.zikozee.ppmtool.domain.project_task;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zikozee.ppmtool.base.BaseEntity;
+import com.zikozee.ppmtool.domain.backlog.Backlog;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,6 +28,10 @@ public class ProjectTask extends BaseEntity {
     private Date dueDate;
 
     //ManyToOne with Backlog
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
+    @JsonIgnore // to curb infinite Reference
+    private Backlog backlog;
 
     @Column(updatable = false)
     private String projectIdentifier;

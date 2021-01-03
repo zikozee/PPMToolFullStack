@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.zikozee.ppmtool.base.BaseEntity;
 import com.zikozee.ppmtool.domain.project.Project;
+import com.zikozee.ppmtool.domain.project_task.ProjectTask;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "backlog")
@@ -26,5 +29,6 @@ public class Backlog extends BaseEntity {
     private Project project;
 
     //OneToMany projectTasks
-
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "backlog")
+    private List<ProjectTask> projectTasks = new ArrayList<>();
 }
